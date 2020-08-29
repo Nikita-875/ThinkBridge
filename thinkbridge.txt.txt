@@ -1,0 +1,61 @@
+#include<bits/stdc++.h>
+#include<iostream>
+using namespace std;
+
+string helper(int& num);
+int main()
+{
+	int n;
+	cin>>n; 
+	string out ; 
+	out = helper(n);
+	cout<<out<<"\n";	
+}
+string helper(int& num){
+		const static char* less_ten[] =
+		{ "", " One", " Two", " Three", " Four", " Five", " Six", " Seven", " Eight", " Nine" };
+		const static char* less_twenty[] =
+		{ " Ten", " Eleven", " Twelve", " Thirteen", " Fourteen", " Fifteen", " Sixteen", " Seventeen", " Eighteen", " Nineteen" };
+		const static char* less_hundred[] =
+		{ "", "", " Twenty", " Thirty", " Forty", " Fifty", " Sixty", " Seventy", " Eighty", " Ninety" };
+
+		int less_thousand = num % 1000;
+		num /= 1000;
+		string s; 
+		
+		if (less_thousand != 0){
+			int hundred = less_thousand / 100;
+			less_thousand %= 100; 
+			int tenth = less_thousand / 10; 
+			int single = less_thousand % 10; 
+			
+			if (hundred) s = s + less_ten[hundred] + " Hundred";
+			
+			if (tenth){
+				if (tenth == 1){
+		            s += less_twenty[single];
+					return s;
+				}
+				else  s += less_hundred[tenth];
+
+			}
+			if (single) s += less_ten[single];
+		}
+		return s;
+	}
+	string numberToWords(int num) {
+		const static char* unit[] = 
+		    { "", " Thousand", " Million", " Billion", " Triliion" };
+		    
+		string s;
+		int i = 0;
+		while (num){
+			string part = helper(num);
+			if(i++ == 0){
+			    s = part; 
+			} 
+			else if (part.size()) s = part + unit[i] + s;
+		}
+		s = s.size() ? s.substr(1) : "Zero";
+		return s;
+	}
